@@ -13,7 +13,7 @@ import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import { headerHeight } from ".";
 
 const drawerWidth = {
-  open: 240,
+  open: 180,
   close: 80,
 };
 
