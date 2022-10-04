@@ -1,0 +1,14 @@
+:root {
+    --drawer-width: 240px;
+    --header-height: 64px;
+}
+/* 
+.header{
+    margin-left: var(--drawer-width);
+    width: calc(100% - var(--drawer-width));
+} */
+
+.drawer{
+    width: var(--drawer-width);
+    height: calc(100% - (var(--header-height)));
+}

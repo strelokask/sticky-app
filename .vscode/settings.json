@@ -1,0 +1,9 @@
+{
+    "editor.formatOnSave": true,
+    "prettier.enable": true,
+    "javascript.suggest.autoImports": true,
+    "typescript.suggest.autoImports": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    }
+}
