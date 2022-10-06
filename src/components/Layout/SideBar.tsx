@@ -22,7 +22,7 @@ interface SideBarProps {
 }
 const SideBar: FC<SideBarProps> = ({ open }) => {
   const items = [
-    { title: "Sticky", icon: <EmojiObjectsIcon /> },
+    { title: "Notes", icon: <EmojiObjectsIcon /> },
     { title: "Archive", icon: <ArchiveIcon /> },
   ];
 

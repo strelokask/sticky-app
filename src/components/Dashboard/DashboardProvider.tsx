@@ -1,12 +1,42 @@
-import React, { FC, PropsWithChildren, useState } from "react";
+import React, {
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
+import { INote, NoteType } from "../../domain/Note";
 
 interface IDashboardContext {
-  color: string;
-  onColorChange?: (color: string) => void;
+  notes: INote[];
+  archivedNotes: INote[];
+  onNoteChange: (note: INote | undefined) => void;
+  getNoteById: (id: number | undefined) => INote | undefined;
 }
 
+const defaultNotes = {
+  1: {
+    id: 1,
+    content:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+  },
+  2: {
+    id: 2,
+    content:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+  },
+  3: {
+    id: 3,
+    content:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+  },
+};
+
 const defaultValue = {
-  color: "light",
+  notes: [],
+  archivedNotes: [],
+  onNoteChange: () => {},
+  getNoteById: (id: number | undefined) => undefined,
 };
 
 export const DashboardContext =
@@ -15,14 +45,29 @@ export const DashboardContext =
 export const DashboardContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [color, setColor] = useState("#aabbcc");
+  const [notes, setNotes] = useState<Record<number, INote>>(defaultNotes);
 
-  const onColorChange = (color: string) => {
-    setColor(color);
-  };
+  const onNoteChange = useCallback((note: INote | undefined) => {
+    if (note?.id) setNotes((prev) => ({ ...prev, [note.id as number]: note }));
+  }, []);
+  const getNoteById = useCallback(
+    (id: number | undefined) => (id ? notes[id] : undefined),
+    [notes]
+  );
+  const value = useMemo(() => {
+    return {
+      notes: Object.values(notes).filter((x) => x.type !== NoteType.Archive),
+      archivedNotes: Object.values(notes).filter(
+        (x) => x.type === NoteType.Archive
+      ),
+      getNoteById,
+      onNoteChange,
+    };
+  }, [notes, onNoteChange, getNoteById]);
+
   return (
     <>
-      <DashboardContext.Provider value={{ color, onColorChange }}>
+      <DashboardContext.Provider value={value}>
         {children}
       </DashboardContext.Provider>
     </>
