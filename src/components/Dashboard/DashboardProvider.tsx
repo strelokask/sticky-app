@@ -1,9 +1,11 @@
+import { Button } from "@mui/material";
+import { useSnackbar } from "notistack";
 import React, {
   FC,
   PropsWithChildren,
   useCallback,
   useMemo,
-  useState,
+  useState
 } from "react";
 import { INote, NoteType } from "../../domain/Note";
 
@@ -36,9 +38,9 @@ const defaultNotes = {
 const defaultValue = {
   notes: [],
   archivedNotes: [],
-  onNoteChange: () => {},
+  onNoteChange: (note?: INote) => { },
   getNoteById: (id: number | undefined) => undefined,
-  archiveNote: (note?: INote) => {},
+  archiveNote: (note?: INote) => { },
 };
 
 export const DashboardContext =
@@ -49,20 +51,34 @@ export const DashboardContextProvider: FC<PropsWithChildren> = ({
 }) => {
   const [notes, setNotes] = useState<Record<number, INote>>(defaultNotes);
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const onNoteChange = useCallback((note: INote | undefined) => {
-    if (note?.id) setNotes((prev) => ({ ...prev, [note.id as number]: note }));
+    if (note?.id) {
+
+      setNotes((prev) => ({ ...prev, [note.id as number]: note }));
+    }
   }, []);
 
   const archiveNote = useCallback(
     (note: INote | undefined) => {
-      if (note)
+      if (note) {
         onNoteChange({
           ...note,
           content: note.content,
           type: NoteType.Archive,
         });
+
+        enqueueSnackbar('Moved to archive.', {
+          persist: true,
+          action: (key) => <Button onClick={() => {
+            onNoteChange({ ...note })
+            closeSnackbar(key)
+          }}>UNDO</Button>
+        })
+      }
     },
-    [onNoteChange]
+    [onNoteChange, enqueueSnackbar, closeSnackbar]
   );
 
   const getNoteById = useCallback(
@@ -71,7 +87,7 @@ export const DashboardContextProvider: FC<PropsWithChildren> = ({
   );
   const value = useMemo(() => {
     return {
-      notes: Object.values(notes).filter((x) => x.type !== NoteType.Archive),
+      notes: Object.values(notes).filter((x) => !x.type),
       archivedNotes: Object.values(notes).filter(
         (x) => x.type === NoteType.Archive
       ),
