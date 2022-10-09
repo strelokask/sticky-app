@@ -60,7 +60,6 @@ export const DashboardContextProvider: FC<PropsWithChildren> = ({
         archivedNotes.addItem(note);
 
         enqueueSnackbar('Moved to archive.', {
-          persist: true,
           action: (key) => <Button onClick={() => {
 
             notes.addItem({ ...note })
