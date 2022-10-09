@@ -8,14 +8,16 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { INote } from "../../domain/Note";
+import { DashboardContext } from "../Dashboard/DashboardProvider";
 
 interface NoteProps {
   note: INote;
   onUpdateContent: (noteId?: number) => void;
 }
 const Note: FC<NoteProps> = ({ note, onUpdateContent }) => {
+  const { archiveNote } = useContext(DashboardContext);
   return (
     <Card raised>
       <CardContent sx={{ maxWidth: 400 }}>
@@ -27,7 +29,7 @@ const Note: FC<NoteProps> = ({ note, onUpdateContent }) => {
         <IconButton>
           <AddAlertIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => archiveNote(note)}>
           <MoveToInboxIcon />
         </IconButton>
       </CardActions>

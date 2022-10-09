@@ -7,9 +7,12 @@ import {
   Grid,
   IconButton,
   TextField,
+  Zoom,
 } from "@mui/material";
+import { TransitionProps } from "@mui/material/transitions";
 import { Box } from "@mui/system";
-import { FC, useContext, useState } from "react";
+import React, { FC, useContext, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { INote } from "../../domain/Note";
 import Note from "../Note/Note";
 import { DashboardContext } from "./DashboardProvider";
@@ -19,8 +22,27 @@ interface DialogProps {
   open: boolean;
 }
 
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>
+) {
+  return (
+    <Zoom
+      style={{ transitionDelay: "50ms" }}
+      timeout={1000}
+      in
+      ref={ref}
+      {...props}
+    />
+  );
+});
+
 const Dashboard: FC = () => {
-  const { notes, onNoteChange, getNoteById } = useContext(DashboardContext);
+  const { pathname } = useLocation();
+  const { notes, archivedNotes, onNoteChange, getNoteById, archiveNote } =
+    useContext(DashboardContext);
 
   const [dialog, updateDialog] = useState<DialogProps>({ open: false });
   const handleCloseDialog = () => updateDialog((d) => ({ ...d, open: false }));
@@ -44,14 +66,21 @@ const Dashboard: FC = () => {
   return (
     <Box component="main" sx={{ display: "flex", flexGrow: 1, p: 2 }}>
       <Grid container spacing={2}>
-        {Object.values(notes).map((note) => (
-          <Grid key={note.id} item xs={4} md={3}>
-            <Note note={note} onUpdateContent={handleOpenDialog} />
-          </Grid>
-        ))}
+        {pathname === "/"
+          ? notes.map((note) => (
+              <Grid key={note.id} item xs={4} md={3}>
+                <Note note={note} onUpdateContent={handleOpenDialog} />
+              </Grid>
+            ))
+          : archivedNotes.map((note) => (
+              <Grid key={note.id} item xs={4} md={3}>
+                <Note note={note} onUpdateContent={handleOpenDialog} />
+              </Grid>
+            ))}
       </Grid>
       <Dialog
         open={dialog.open}
+        TransitionComponent={Transition}
         onClose={handleCloseDialog}
         maxWidth="sm"
         fullWidth
@@ -71,7 +100,12 @@ const Dashboard: FC = () => {
           <IconButton>
             <AddAlertIcon />
           </IconButton>
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              archiveNote(dialog.selectedNote);
+              handleCloseDialog();
+            }}
+          >
             <MoveToInboxIcon />
           </IconButton>
         </DialogActions>

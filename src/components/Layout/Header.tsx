@@ -2,6 +2,7 @@ import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import { FC } from "react";
 
 import MenuIcon from "@mui/icons-material/Menu";
+import { Link } from "react-router-dom";
 import { headerHeight } from ".";
 interface HeaderProps {
   onClick: () => void;
@@ -21,8 +22,11 @@ const Header: FC<HeaderProps> = ({ onClick }) => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Sticky
+          <Link style={{ textDecoration: "none", color: "white" }} to="/">
+            Sticky
+          </Link>
         </Typography>
+
         <Button color="inherit">Login</Button>
       </Toolbar>
     </AppBar>

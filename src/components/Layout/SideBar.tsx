@@ -10,6 +10,7 @@ import { FC } from "react";
 
 import ArchiveIcon from "@mui/icons-material/Archive";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
+import { Link } from "react-router-dom";
 import { headerHeight } from ".";
 
 const drawerWidth = {
@@ -22,8 +23,8 @@ interface SideBarProps {
 }
 const SideBar: FC<SideBarProps> = ({ open }) => {
   const items = [
-    { title: "Notes", icon: <EmojiObjectsIcon /> },
-    { title: "Archive", icon: <ArchiveIcon /> },
+    { title: "Notes", icon: <EmojiObjectsIcon />, to: "/" },
+    { title: "Archive", icon: <ArchiveIcon />, to: "/archive" },
   ];
 
   return (
@@ -42,11 +43,17 @@ const SideBar: FC<SideBarProps> = ({ open }) => {
       }}
     >
       <List>
-        {items.map(({ title, icon }) => (
+        {items.map(({ title, icon, to }) => (
           <ListItem key={title}>
             <ListItemButton>
               <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={title} />
+              <ListItemText
+                primary={
+                  <Link style={{ textDecoration: "none" }} to={to}>
+                    {title}
+                  </Link>
+                }
+              />
             </ListItemButton>
           </ListItem>
         ))}

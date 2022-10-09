@@ -12,6 +12,7 @@ interface IDashboardContext {
   archivedNotes: INote[];
   onNoteChange: (note: INote | undefined) => void;
   getNoteById: (id: number | undefined) => INote | undefined;
+  archiveNote: (note: INote | undefined) => void;
 }
 
 const defaultNotes = {
@@ -37,6 +38,7 @@ const defaultValue = {
   archivedNotes: [],
   onNoteChange: () => {},
   getNoteById: (id: number | undefined) => undefined,
+  archiveNote: (note?: INote) => {},
 };
 
 export const DashboardContext =
@@ -50,6 +52,19 @@ export const DashboardContextProvider: FC<PropsWithChildren> = ({
   const onNoteChange = useCallback((note: INote | undefined) => {
     if (note?.id) setNotes((prev) => ({ ...prev, [note.id as number]: note }));
   }, []);
+
+  const archiveNote = useCallback(
+    (note: INote | undefined) => {
+      if (note)
+        onNoteChange({
+          ...note,
+          content: note.content,
+          type: NoteType.Archive,
+        });
+    },
+    [onNoteChange]
+  );
+
   const getNoteById = useCallback(
     (id: number | undefined) => (id ? notes[id] : undefined),
     [notes]
@@ -62,8 +77,9 @@ export const DashboardContextProvider: FC<PropsWithChildren> = ({
       ),
       getNoteById,
       onNoteChange,
+      archiveNote,
     };
-  }, [notes, onNoteChange, getNoteById]);
+  }, [notes, onNoteChange, getNoteById, archiveNote]);
 
   return (
     <>
