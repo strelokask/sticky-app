@@ -2,45 +2,36 @@ import { Button } from "@mui/material";
 import { useSnackbar } from "notistack";
 import React, {
   FC,
-  PropsWithChildren,
-  useCallback,
-  useMemo,
+  PropsWithChildren, useCallback, useEffect, useMemo,
   useState
 } from "react";
-import { INote, NoteType } from "../../domain/Note";
+import { INote } from "../../domain/Note";
+import { useArray, useArrayReturnType } from "../../utils/hooks/useArray";
+import NoteDialog from "../Note/NoteDialog";
+
+interface DialogProps {
+  onSelectNote: (noteId?: number) => void;
+  selectedNoteId?: number;
+}
 
 interface IDashboardContext {
-  notes: INote[];
-  archivedNotes: INote[];
-  onNoteChange: (note: INote | undefined) => void;
-  getNoteById: (id: number | undefined) => INote | undefined;
+  notes: useArrayReturnType<INote>;
+  archivedNotes: useArrayReturnType<INote>;
+  dialog: DialogProps;
   archiveNote: (note: INote | undefined) => void;
 }
 
-const defaultNotes = {
-  1: {
-    id: 1,
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-  2: {
-    id: 2,
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-  3: {
-    id: 3,
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-};
+const defaultNotes = [
+  { id: 1, content: 'TEST1' },
+  { id: 2, content: 'TEST2' },
+  { id: 3, content: 'TEST3' },
+]
 
-const defaultValue = {
-  notes: [],
-  archivedNotes: [],
-  onNoteChange: (note?: INote) => { },
-  getNoteById: (id: number | undefined) => undefined,
-  archiveNote: (note?: INote) => { },
+const defaultValue: IDashboardContext = {
+  notes: { items: [], reset: () => { }, editItem: () => { }, removeItem: () => { }, addItem: () => { }, reorder: () => { } },
+  archivedNotes: { items: [], reset: () => { }, editItem: () => { }, removeItem: () => { }, addItem: () => { }, reorder: () => { } },
+  dialog: { onSelectNote: () => { } },
+  archiveNote: () => { }
 };
 
 export const DashboardContext =
@@ -49,58 +40,57 @@ export const DashboardContext =
 export const DashboardContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [notes, setNotes] = useState<Record<number, INote>>(defaultNotes);
+  const notes = useArray<INote>();
+  const archivedNotes = useArray<INote>();
+  const [selectedNoteId, setSelectedNoteId] = useState<number>();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const onNoteChange = useCallback((note: INote | undefined) => {
-    if (note?.id) {
-
-      setNotes((prev) => ({ ...prev, [note.id as number]: note }));
-    }
-  }, []);
+  useEffect(() => {
+    console.log("setting default data")
+    notes.reset(defaultNotes);
+    archivedNotes.reset(defaultNotes);
+    // eslint-disable-next-line
+  }, [])
 
   const archiveNote = useCallback(
     (note: INote | undefined) => {
       if (note) {
-        onNoteChange({
-          ...note,
-          content: note.content,
-          type: NoteType.Archive,
-        });
+        notes.removeItem(note);
+        archivedNotes.addItem(note);
 
         enqueueSnackbar('Moved to archive.', {
           persist: true,
           action: (key) => <Button onClick={() => {
-            onNoteChange({ ...note })
+
+            notes.addItem({ ...note })
+            archivedNotes.removeItem(note);
+
             closeSnackbar(key)
           }}>UNDO</Button>
         })
       }
     },
-    [onNoteChange, enqueueSnackbar, closeSnackbar]
+    [enqueueSnackbar, closeSnackbar, notes, archivedNotes]
   );
 
-  const getNoteById = useCallback(
-    (id: number | undefined) => (id ? notes[id] : undefined),
-    [notes]
-  );
   const value = useMemo(() => {
     return {
-      notes: Object.values(notes).filter((x) => !x.type),
-      archivedNotes: Object.values(notes).filter(
-        (x) => x.type === NoteType.Archive
-      ),
-      getNoteById,
-      onNoteChange,
-      archiveNote,
+      notes,
+      archivedNotes,
+      dialog: {
+        onSelectNote: (noteId?: number) => setSelectedNoteId(noteId),
+        selectedNoteId,
+      },
+      archiveNote
     };
-  }, [notes, onNoteChange, getNoteById, archiveNote]);
+  }, [notes, archivedNotes, selectedNoteId, archiveNote]);
 
   return (
     <>
       <DashboardContext.Provider value={value}>
         {children}
+        <NoteDialog />
       </DashboardContext.Provider>
     </>
   );

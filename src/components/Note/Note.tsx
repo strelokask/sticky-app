@@ -6,7 +6,7 @@ import {
   CardActions,
   CardContent,
   IconButton,
-  Typography,
+  Typography
 } from "@mui/material";
 import { FC, useContext } from "react";
 import { INote } from "../../domain/Note";
@@ -14,14 +14,14 @@ import { DashboardContext } from "../Dashboard/DashboardProvider";
 
 interface NoteProps {
   note: INote;
-  onUpdateContent: (noteId?: number) => void;
 }
-const Note: FC<NoteProps> = ({ note, onUpdateContent }) => {
-  const { archiveNote } = useContext(DashboardContext);
+const Note: FC<NoteProps> = ({ note }) => {
+  const { archiveNote, dialog } = useContext(DashboardContext);
+
   return (
     <Card raised>
       <CardContent sx={{ maxWidth: 400 }}>
-        <CardActionArea onClick={() => onUpdateContent(note.id)}>
+        <CardActionArea onClick={() => dialog.onSelectNote(note.id)}>
           <Typography>{note.content}</Typography>
         </CardActionArea>
       </CardContent>
