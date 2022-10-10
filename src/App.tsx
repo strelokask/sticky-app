@@ -1,17 +1,20 @@
 import { SnackbarProvider } from "notistack";
-import { Route, Routes } from "react-router-dom";
-import Dashboard from "./components/Dashboard/Dashboard";
-import { DashboardContextProvider } from "./components/Dashboard/DashboardProvider";
-import Layout from "./components/Layout";
+import { lazy } from "react";
+import { DashboardContextProvider } from "./components/app/Dashboard/DashboardProvider";
+import Layout from "./components/app/Layout";
+import AppRouting, { RoutingType } from "./components/app/Routing/AppRouting";
+
+const routes: RoutingType[] = [
+  { path: '/', element: lazy(() => import('./components/Home/Home')) },
+  { path: '/archive', element: lazy(() => import('./components/Archive/Archive')) },
+]
 
 function App() {
   return (
     <SnackbarProvider maxSnack={5}>
       <Layout>
         <DashboardContextProvider>
-          <Routes>
-            <Route path="*" element={<Dashboard />} />
-          </Routes>
+          <AppRouting routes={routes} />
         </DashboardContextProvider>
       </Layout>
     </SnackbarProvider>

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { FC, useContext } from "react";
 import { INote } from "../../domain/Note";
-import { DashboardContext } from "../Dashboard/DashboardProvider";
+import { DashboardContext } from "../app/Dashboard/DashboardProvider";
 
 interface NoteProps {
   note: INote;

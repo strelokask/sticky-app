@@ -4,7 +4,7 @@ import { Dialog, DialogActions, DialogContent, IconButton, TextField, Zoom } fro
 import { TransitionProps } from "@mui/material/transitions";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { INote } from "../../domain/Note";
-import { DashboardContext } from "../Dashboard/DashboardProvider";
+import { DashboardContext } from "../app/Dashboard/DashboardProvider";
 
 
 const Transition = React.forwardRef(function Transition(
