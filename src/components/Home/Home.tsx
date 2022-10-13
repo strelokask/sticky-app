@@ -3,6 +3,7 @@ import { FC, useContext } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { DashboardContext } from "../app/Dashboard/DashboardProvider";
 import DnDNotesList from "../Note/DnDNotesList";
+import Note from "../Note/Note";
 
 const Home: FC = () => {
 
@@ -15,7 +16,7 @@ const Home: FC = () => {
     }
     return (
         <Box component="main" sx={{ display: "flex", flexGrow: 1, p: 2 }}>
-            <DnDNotesList notes={notes.items} onDragEnd={handleDragEnd} />
+            <DnDNotesList notes={notes.items} onDragEnd={handleDragEnd} NoteComponent={Note} />
         </Box>
     );
 }

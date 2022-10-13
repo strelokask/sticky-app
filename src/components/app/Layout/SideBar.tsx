@@ -4,7 +4,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
+  ListItemText
 } from "@mui/material";
 import { FC } from "react";
 
@@ -45,16 +45,16 @@ const SideBar: FC<SideBarProps> = ({ open }) => {
       <List>
         {items.map(({ title, icon, to }) => (
           <ListItem key={title}>
-            <ListItemButton>
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText
-                primary={
-                  <Link style={{ textDecoration: "none" }} to={to}>
-                    {title}
-                  </Link>
-                }
-              />
-            </ListItemButton>
+            <Link style={{ textDecoration: "none" }} to={to}>
+              <ListItemButton>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText
+                  primary={
+                    title
+                  }
+                />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
       </List>

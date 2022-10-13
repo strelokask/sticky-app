@@ -19,6 +19,7 @@ interface IDashboardContext {
   archivedNotes: useArrayReturnType<INote>;
   dialog: DialogProps;
   archiveNote: (note: INote | undefined) => void;
+  unArchiveNote: (note: INote | undefined) => void;
 }
 
 const defaultNotes = [
@@ -31,7 +32,8 @@ const defaultValue: IDashboardContext = {
   notes: { items: [], reset: () => { }, editItem: () => { }, removeItem: () => { }, addItem: () => { }, reorder: () => { } },
   archivedNotes: { items: [], reset: () => { }, editItem: () => { }, removeItem: () => { }, addItem: () => { }, reorder: () => { } },
   dialog: { onSelectNote: () => { } },
-  archiveNote: () => { }
+  archiveNote: () => { },
+  unArchiveNote: () => { }
 };
 
 export const DashboardContext =
@@ -73,6 +75,26 @@ export const DashboardContextProvider: FC<PropsWithChildren> = ({
     [enqueueSnackbar, closeSnackbar, notes, archivedNotes]
   );
 
+  const unArchiveNote = useCallback(
+    (note: INote | undefined) => {
+      if (note) {
+        archivedNotes.removeItem(note);
+        notes.addItem(note);
+
+        enqueueSnackbar('Moved to notes.', {
+          action: (key) => <Button onClick={() => {
+
+            archivedNotes.addItem({ ...note })
+            notes.removeItem(note);
+
+            closeSnackbar(key)
+          }}>UNDO</Button>
+        })
+      }
+    },
+    [enqueueSnackbar, closeSnackbar, notes, archivedNotes]
+  );
+
   const value = useMemo(() => {
     return {
       notes,
@@ -81,9 +103,9 @@ export const DashboardContextProvider: FC<PropsWithChildren> = ({
         onSelectNote: (noteId?: number) => setSelectedNoteId(noteId),
         selectedNoteId,
       },
-      archiveNote
+      archiveNote, unArchiveNote
     };
-  }, [notes, archivedNotes, selectedNoteId, archiveNote]);
+  }, [notes, archivedNotes, selectedNoteId, archiveNote, unArchiveNote]);
 
   return (
     <>

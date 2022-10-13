@@ -7,5 +7,10 @@
     "source.organizeImports": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.foldingImportsByDefault": true
+  "editor.foldingImportsByDefault": true,
+  "javascript.format.placeOpenBraceOnNewLineForControlBlocks": true,
+  "javascript.format.semicolons": "ignore",
+  "prettier.arrowParens": "always",
+  "prettier.embeddedLanguageFormatting": "auto",
+  "prettier.enableDebugLogs": true
 }
