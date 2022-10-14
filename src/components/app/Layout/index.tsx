@@ -13,9 +13,11 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
     <>
       <CssBaseline />
       <Header onClick={toggle} />
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", height: 1 }}>
         <SideBar open={open} />
-        {children}
+        <Box display="flex" flexDirection="column" sx={{ width: 1 }}>
+          {children}
+        </Box>
       </Box>
     </>
   );
