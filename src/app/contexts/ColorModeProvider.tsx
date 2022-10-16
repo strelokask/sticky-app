@@ -1,6 +1,7 @@
 import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from "@mui/material";
 import { green, grey, teal } from "@mui/material/colors";
-import { createContext, FC, PropsWithChildren, useCallback, useMemo, useState } from "react";
+import { createContext, FC, PropsWithChildren, useCallback, useMemo } from "react";
+import { useLocalStorage } from "../../utils/hooks/useStorage";
 
 interface Props {
     mode: PaletteMode,
@@ -15,14 +16,14 @@ const initialState: Props = {
 export const ColorModeContext = createContext(initialState);
 
 export const ColorModeContextProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [darkModeOn, setDarkMode] = useState<PaletteMode>('dark');
+    const [darkModeOn, setDarkMode] = useLocalStorage<PaletteMode>('mode', 'dark');
 
     const value = useMemo(() => {
         return {
             mode: darkModeOn,
-            toggleMode: () => setDarkMode(mode => mode === 'dark' ? 'light' : 'dark')
+            toggleMode: () => setDarkMode(darkModeOn === 'dark' ? 'light' : 'dark')
         }
-    }, [darkModeOn])
+    }, [darkModeOn, setDarkMode])
 
     const getDesignTokens = useCallback((mode: PaletteMode) => ({
         palette: {

@@ -6,7 +6,7 @@ const DarkModeSwitch: FC = () => {
 
     const { mode, toggleMode } = useContext(ColorModeContext);
 
-    return <Switch onClick={toggleMode} sx={{
+    return <Switch onClick={toggleMode} checked={mode === 'dark'} sx={{
         width: 70,
         '& .MuiSwitch-switchBase': {
             margin: 0.5,
