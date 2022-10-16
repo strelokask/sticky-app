@@ -9,8 +9,8 @@ import {
   Typography
 } from "@mui/material";
 import { FC, useContext } from "react";
+import { DashboardContext } from "../../app/contexts/DashboardProvider";
 import { INote } from "../../domain/Note";
-import { DashboardContext } from "../app/Dashboard/DashboardProvider";
 
 interface NoteProps {
   note: INote;

@@ -1,15 +1,15 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
-import { FC } from "react";
-
 import MenuIcon from "@mui/icons-material/Menu";
+import { AppBar, Divider, IconButton, Toolbar, Typography } from "@mui/material";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { headerHeight } from ".";
+import DarkModeSwitch from '../DarkModeSwitch/DarkModeSwitch';
 
 interface HeaderProps {
   onClick: () => void;
 }
 const Header: FC<HeaderProps> = ({ onClick }) => {
-  return (
+  return (<>
     <AppBar position="static" sx={{ height: headerHeight }}>
       <Toolbar>
         <IconButton
@@ -27,10 +27,11 @@ const Header: FC<HeaderProps> = ({ onClick }) => {
             Sticky
           </Link>
         </Typography>
-
-        <Button color="inherit">Login</Button>
+        <DarkModeSwitch />
       </Toolbar>
     </AppBar>
+    <Divider />
+  </>
   );
 };
 

@@ -31,6 +31,7 @@ const SideBar: FC<SideBarProps> = ({ open }) => {
     <Drawer
       variant="permanent"
       anchor="left"
+      color="primary"
       sx={{
         width: open ? drawerWidth.open : drawerWidth.close,
         flexShrink: 0,

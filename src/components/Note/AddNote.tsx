@@ -1,7 +1,7 @@
 import { Box, ClickAwayListener, TextField } from "@mui/material";
 import { FC, useContext, useRef, useState } from "react";
+import { DashboardContext } from "../../app/contexts/DashboardProvider";
 import { INote } from "../../domain/Note";
-import { DashboardContext } from "../app/Dashboard/DashboardProvider";
 
 const defaultNote = {
     content: '', id: 0
@@ -35,7 +35,17 @@ const AddNote: FC = () => {
         setAddNote(changedNote);
     };
     return <ClickAwayListener onClickAway={handleClickAway}>
-        <Box display="flex" flexDirection={'column'} ref={containerRef} sx={{ m: '20px auto', border: "solid black 0.1px", borderRadius: "8px", p: '15px' }}>
+        <Box
+            display="flex"
+            flexDirection={'column'}
+            ref={containerRef}
+            sx={{
+                m: '20px auto',
+                borderColor: 'primary.main',
+                borderRadius: "8px",
+                border: 1,
+                p: '15px'
+            }}>
             {showTextField && (
                 <TextField
                     placeholder="Введите заголовок"

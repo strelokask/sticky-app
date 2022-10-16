@@ -3,8 +3,8 @@ import MoveToInboxIcon from "@mui/icons-material/MoveToInbox";
 import { Dialog, DialogActions, DialogContent, IconButton, TextField, Zoom } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import React, { FC, useContext, useEffect, useState } from "react";
+import { DashboardContext } from "../../app/contexts/DashboardProvider";
 import { INote } from "../../domain/Note";
-import { DashboardContext } from "../app/Dashboard/DashboardProvider";
 
 
 const Transition = React.forwardRef(function Transition(

@@ -1,4 +1,4 @@
-import { Box, CssBaseline } from "@mui/material";
+import { Box } from "@mui/material";
 import { FC, PropsWithChildren, useState } from "react";
 import Header from "./Header";
 import SideBar from "./SideBar";
@@ -11,7 +11,6 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <CssBaseline />
       <Header onClick={toggle} />
       <Box sx={{ display: "flex", height: 1 }}>
         <SideBar open={open} />

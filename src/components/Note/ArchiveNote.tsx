@@ -2,8 +2,8 @@ import AddAlertIcon from "@mui/icons-material/AddAlert";
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import { Card, CardActionArea, CardActions, CardContent, IconButton, Typography } from "@mui/material";
 import { FC, useContext } from "react";
+import { DashboardContext } from "../../app/contexts/DashboardProvider";
 import { INote } from "../../domain/Note";
-import { DashboardContext } from "../app/Dashboard/DashboardProvider";
 interface NoteProps {
     note: INote;
 }

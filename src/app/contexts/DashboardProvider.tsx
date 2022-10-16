@@ -5,9 +5,9 @@ import React, {
   PropsWithChildren, useCallback, useEffect, useMemo,
   useState
 } from "react";
-import { INote } from "../../../domain/Note";
-import { useArray, useArrayReturnType } from "../../../utils/hooks/useArray";
-import NoteDialog from "../../Note/NoteDialog";
+import NoteDialog from "../../components/Note/NoteDialog";
+import { INote } from "../../domain/Note";
+import { useArray, useArrayReturnType } from "../../utils/hooks/useArray";
 
 interface DialogProps {
   onSelectNote: (noteId?: number) => void;

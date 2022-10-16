@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { FC, useContext } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { DashboardContext } from "../app/Dashboard/DashboardProvider";
+import { DashboardContext } from "../../app/contexts/DashboardProvider";
 import ArchiveNote from "../Note/ArchiveNote";
 import DnDNotesList from "../Note/DnDNotesList";
 

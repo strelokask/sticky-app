@@ -11,7 +11,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 # TODO
 
-- add theme (black, light)
 - on UNDO, return with current position
 - add SearchBox
 - add ability to add list of todo
