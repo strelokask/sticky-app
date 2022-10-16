@@ -19,7 +19,6 @@ const Home: FC = () => {
         <Box component="main" sx={{ display: "flex", flexDirection: 'column', p: 2 }}>
             <AddNote />
             <DnDNotesList notes={notes.items} onDragEnd={handleDragEnd} NoteComponent={Note} />
-
         </Box>
     );
 }

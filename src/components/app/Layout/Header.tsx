@@ -4,7 +4,7 @@ import { FC } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 import { headerHeight } from ".";
-import SearchBox from "../../SearchBox/SearchBox";
+
 interface HeaderProps {
   onClick: () => void;
 }
@@ -27,7 +27,6 @@ const Header: FC<HeaderProps> = ({ onClick }) => {
             Sticky
           </Link>
         </Typography>
-        <SearchBox />
 
         <Button color="inherit">Login</Button>
       </Toolbar>

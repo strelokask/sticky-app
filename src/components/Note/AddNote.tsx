@@ -35,12 +35,12 @@ const AddNote: FC = () => {
         setAddNote(changedNote);
     };
     return <ClickAwayListener onClickAway={handleClickAway}>
-        <Box display="flex" flexDirection={'column'} ref={containerRef}>
+        <Box display="flex" flexDirection={'column'} ref={containerRef} sx={{ m: '20px auto', border: "solid black 0.1px", borderRadius: "8px", p: '15px' }}>
             {showTextField && (
                 <TextField
                     placeholder="Введите заголовок"
-                    variant="outlined"
-                    // InputProps={{ disableUnderline: true }}
+                    variant="standard"
+                    InputProps={{ disableUnderline: true }}
                     style={{ marginBottom: 10 }}
                     onChange={onTextChange}
                     name="heading"
@@ -48,11 +48,13 @@ const AddNote: FC = () => {
             )}
             <TextField
                 placeholder="Заметка..."
+                variant="standard"
+                InputProps={{ disableUnderline: true }}
                 multiline
-                variant="outlined"
+                maxRows={Infinity}
                 onClick={onTextAreaClick}
                 onChange={onTextChange}
-                name="text"
+                name="content"
                 value={addNote.content}
             />
         </Box>
